@@ -1,0 +1,13 @@
+*** Snowflake Objects and Warehouses ***
+
+
+
+- To grant a select privilege on a table, we also need to grant usage on the schema and database in which that table is located.
+https://docs.snowflake.com/en/user-guide/security-access-control-considerations#accessing-database-objects
+
+	Example: GRANT USAGE ON DATABASE DEMO TO ROLE ANALYST;
+	GRANT USAGE ON SCHEMA DEMO.DEMO_SCHEMA TO ROLE ANALYST;
+	GRANT SELECT ON TABLE DEMO.DEMO_SCHEMA.BIKE TO ROLE ANALYST;
+
+
+- On creating warehouses in Snowflake: https://docs.snowflake.com/en/sql-reference/sql/create-warehouse#general-usage-notes

@@ -1,0 +1,3 @@
+*** Introduction to DBT ***
+
+- More on dbt Core vs dbt Cloud: https://www.getdbt.com/blog/why-upgrade-dbt-core-to-cloud

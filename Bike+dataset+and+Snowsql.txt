@@ -1,0 +1,20 @@
+*** Bike dataset and Snowsql ***
+
+- Link for the citibike schema: https://citibikenyc.com/system-data
+
+- Link for downloading the citibike datasets: https://s3.amazonaws.com/tripdata/index.html
+
+- Link to download Snowsql: https://www.snowflake.com/en/developers/downloads/snowsql/
+
+- Command to automate the iteration of extraction of zipped folders:
+	
+	- Open Powershell (or the terminal on Mac) and navigate to where the unzipped parent folder is
+	
+	- On Powershell (Windows) execute the command:
+	
+		Get-ChildItem -Path . -Recurse -Filter *.zip | ForEach-Object { Expand-Archive -Path $_.FullName -DestinationPath ($_.DirectoryName + "\" + $_.BaseName) -Force }
+
+
+	- Alternatively on Mac Terminal execute the command:
+	
+		find . -name "*.zip" -exec sh -c ' for zip; do dir="${zip%.zip}" mkdir -p "$dir" && unzip -o "$zip" -d "$dir" done' _ {} +
