@@ -1,0 +1,22 @@
+*** CTES and working with dates - Part 2 ***
+
+- If you're curious, here's some detailed documentation on Snowflake time and date functions:
+	
+	- https://docs.snowflake.com/en/sql-reference/functions/to_timestamp
+	- https://docs.snowflake.com/en/sql-reference/functions/to_date
+	- https://docs.snowflake.com/en/sql-reference/functions/hour-minute-second
+	- https://docs.snowflake.com/en/sql-reference/functions/dayname
+	- https://docs.snowflake.com/en/sql-reference/functions/year#usage-notes
+
+
+The most important step with dates is first to try and convert your string into a timestamp (with TO_TIMESTAMP() or TRY_TO_TIMESTAMP() functions)
+and then use that converted data as an input to the rest of the date functions
+
+
+
+
+
+- Complete code used for date_dimension.sql model: https://github.com/sharetheknowledge/DBT_DEMO/blob/main/models/date_dimension.sql
+
+
+
