@@ -13,6 +13,7 @@
 - https://docs.getdbt.com/docs/install-dbt-extension
 - power user for dbt
   - https://www.youtube.com/watch?v=s-XxqNE4T1s
+- https://github.com/sharetheknowledge/DBT_DEMO/blob/main/models/stg_bike.sql
 
 ### Project File
 
@@ -51,3 +52,14 @@ limit 10
   executed against the database, helping you understand both the
   transformation process and the results. This distinction is vital for
   debugging and validating your dbt models.
+
+### Macros
+
+- go in macro directory
+- ![](assets\20250825_220434_image.png)
+- calling the macro:
+
+### Orchestration
+
+- CREATE TASK (...) WAREHOUSE=(...) SCHEDULE='USING CRON 0 0 * * * UTC'
+- CREATE TASK (...) WAREHOUSE = (...) [AFTER (TASK_NAME)] AS (...)

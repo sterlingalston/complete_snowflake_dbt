@@ -1,0 +1,43 @@
+Urban Crime Exercise – Resources
+
+These are the macros used in the Urban Crime exercise.
+If you haven’t created them earlier in the course, just copy these into a new file 
+named `date_utils.sql` inside your `/macros/` folder in dbt.
+
+************************
+
+-- day_type macro: returns WEEKEND or BUSINESSDAY
+{% macro day_type(x) %}
+    CASE 
+        WHEN DAYNAME({{x}}) IN ('Sat', 'Sun') THEN 'WEEKEND'
+        ELSE 'BUSINESSDAY' 
+    END
+{% endmacro %}
+
+-- get_season macro: returns WINTER, SPRING, SUMMER, AUTUMN
+{% macro get_season(x) %}
+    CASE 
+        WHEN MONTH(TO_TIMESTAMP({{x}})) IN (12, 1, 2) THEN 'WINTER'
+        WHEN MONTH(TO_TIMESTAMP({{x}})) IN (3, 4, 5) THEN 'SPRING'
+        WHEN MONTH(TO_TIMESTAMP({{x}})) IN (6, 7, 8) THEN 'SUMMER'
+        ELSE 'AUTUMN' 
+    END
+{% endmacro %}
+
+************************
+
+Expected output columns for your `stg_crime_newyork.sql` model:
+- OFFENSE_CATEGORY
+- SEASON
+- DAY_TYPE
+- NUMBER_OF_OCCURRENCES
+
+Conditions:
+- Filter only records where `CITY = 'New York'`  
+- Keep only `OFFENSE_CATEGORY` in:  
+   - 'Theft'  
+   - 'Driving Under The Influence'
+
+Tip: Use the `WITH` CTE pattern and call the macros to enrich the data.
+
+Good luck!

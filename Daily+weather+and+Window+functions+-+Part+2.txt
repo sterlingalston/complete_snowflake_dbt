@@ -1,0 +1,12 @@
+*** Daily weather and Window functions - Part 2 ***
+
+- Link to the ROW_NUMBER function documentation on Snowflake: https://docs.snowflake.com/en/sql-reference/functions/row_number#examples
+
+- More examples and explanations on Window functions: https://www.coginiti.co/tutorials/intermediate/sql-window-functions/
+
+	If you want to dive deeper into Window functions, there is a great book I recommend which helped me boost my SQL skills:
+	https://itziktsql.com/t-sql-winfun-2nd-edition
+
+
+
+- Complete code used for daily_weather.sql model: https://github.com/sharetheknowledge/DBT_DEMO/blob/main/models/daily_weather.sql

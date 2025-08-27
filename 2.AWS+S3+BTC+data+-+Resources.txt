@@ -1,0 +1,13 @@
+-- Create the database
+CREATE DATABASE BTC;
+
+-- Create the schema within the BTC database
+CREATE SCHEMA BTC_SCHEMA;
+
+-- Create or replace the external stage pointing to the Bitcoin public S3 bucket
+CREATE OR REPLACE STAGE BTC.BTC_SCHEMA.BTC_STAGE
+  URL = 's3://aws-public-blockchain/v1.0/btc/'
+  FILE_FORMAT = (TYPE = PARQUET);
+
+-- List files available in the stage
+LIST @BTC.BTC_SCHEMA.BTC_STAGE;
