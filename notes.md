@@ -63,3 +63,46 @@ limit 10
 
 - CREATE TASK (...) WAREHOUSE=(...) SCHEDULE='USING CRON 0 0 * * * UTC'
 - CREATE TASK (...) WAREHOUSE = (...) [AFTER (TASK_NAME)] AS (...)
+- If describing a task it needs to be resumed afterwards.
+-  ![](assets\20250826_155407_image.png)
+
+
+### YML Files
+
+sources.yml can be named src.yml
+
+![](assets\20250826_205354_image.png)
+
+schema.yml - all configurations for specific models
+
+schema and sources can be merged, but they MUST BE UNDER MODELS folder
+
+packages.yml will be at same level as dbt_project.yml
+
+### Tests
+
+- singular data tests are for singular column in singular model
+- generic data tests are macros written in test block
+
+### Incremental
+
+{{ config(materialized='incremental') }}
+
+{% if is_incremental() %}
+
+
+{% endif %}
+
+
+![](assets\20250826_222022_image.png)
+
+
+![](assets\20250826_223126_image.png)
+
+#### full refresh
+
+dbt run -m (model name) --full-refresh
+
+#### debug
+
+dbt run -m (model name) --debug
