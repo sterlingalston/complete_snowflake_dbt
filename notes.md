@@ -106,3 +106,5 @@ dbt run -m (model name) --full-refresh
 #### debug
 
 dbt run -m (model name) --debug
+
+#### incremental

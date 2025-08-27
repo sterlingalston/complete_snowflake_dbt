@@ -1,0 +1,58 @@
+Updated stg_btc_outputs.sql as incremental model:
+
+***
+
+{{ config(materialized='incremental',incremental_strategy='append')}}
+
+
+with flattened_outputs as (
+select
+tx.hash_key,
+tx.block_number,
+tx.block_timestamp,
+tx.is_coinbase,
+f.value:address::STRING as output_address,
+f.value:value::FLOAT as output_value
+
+from {{ ref('stg_btc')}} tx,
+
+LATERAL FLATTEN(input => outputs) f
+
+WHERE f.value:address is not null
+
+{% if is_incremental() %}
+
+and tx.block_timestamp >= (select max(block_timestamp) from {{ this }} )
+
+{% endif %}
+
+)
+select
+hash_key,
+block_number,
+block_timestamp,
+is_coinbase,
+output_address,
+output_value
+from flattened_outputs
+
+
+***
+
+
+
+- Command used in this lecture:
+
+	dbt run -m stg_btc_outputs --debug
+	
+***
+
+
+
+	- This model uses incremental materialization with append strategy (new rows are appended each time).
+
+	- The incremental filter ensures only new data (by block_timestamp) is added.
+
+	- LATERAL FLATTEN unpacks the outputs array into individual rows.
+
+	--debug shows detailed execution logs.	

@@ -1,0 +1,29 @@
+Model code stg_btc_outputs.sql:
+
+***
+
+select
+tx.hash_key,
+tx.block_number,
+tx.block_timestamp,
+tx.is_coinbase,
+f.value:address::STRING as output_address,
+f.value:value::FLOAT as output_value
+
+from {{ ref('stg_btc')}} tx,
+
+LATERAL FLATTEN(input => outputs) f
+
+WHERE f.value:address is not null
+
+***
+
+ - Link to the Snowflake documentation about FLATTEN: https://docs.snowflake.com/en/sql-reference/functions/flatten#examples
+
+***
+
+- This model flattens the outputs array from stg_btc so that each output (address + value) appears on its own row.
+
+- LATERAL FLATTEN lets you work with semi-structured data (e.g., VARIANT arrays in Snowflake).
+
+- The WHERE clause filters out outputs that have no address.

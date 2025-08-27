@@ -1,0 +1,37 @@
+Incremental model code stg_btc.sql:
+
+***
+{{ config(
+    materialized = 'incremental',
+    incremental_strategy = 'merge',
+    unique_key = 'HASH_KEY'
+) }}
+
+SELECT
+  *
+FROM {{ source('btc', 'btc') }}
+
+{% if is_incremental() %}
+WHERE BLOCK_TIMESTAMP >= (
+  SELECT max(BLOCK_TIMESTAMP)
+  FROM {{ this }}
+)
+{% endif %}
+
+***
+
+
+Command used in this lecture:
+
+		dbt run -m stg_btc --debug
+
+***
+
+
+ - This transforms stg_btc into an incremental model using merge strategy
+
+ - The unique_key is HASH_KEY
+
+ - When running incrementally, dbt only loads new data (where BLOCK_TIMESTAMP is greater than the latest loaded timestamp)
+
+ - dbt run -m stg_btc --debug shows detailed logs so you can understand what dbt is doing behind the scenes
