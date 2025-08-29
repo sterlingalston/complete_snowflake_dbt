@@ -6,7 +6,6 @@
 | dbt run select {model name} | runs a specific model; no sql needed |         |
 | dbt build                   | models + tests + seeds + snapshots   |         |
 
-
 ### Development
 
 - https://github.com/snowcertmalston4-boop/DBT_DEMO
@@ -64,8 +63,7 @@ limit 10
 - CREATE TASK (...) WAREHOUSE=(...) SCHEDULE='USING CRON 0 0 * * * UTC'
 - CREATE TASK (...) WAREHOUSE = (...) [AFTER (TASK_NAME)] AS (...)
 - If describing a task it needs to be resumed afterwards.
--  ![](assets\20250826_155407_image.png)
-
+- ![](assets\20250826_155407_image.png)
 
 ### YML Files
 
@@ -90,12 +88,9 @@ packages.yml will be at same level as dbt_project.yml
 
 {% if is_incremental() %}
 
-
 {% endif %}
 
-
 ![](assets\20250826_222022_image.png)
-
 
 ![](assets\20250826_223126_image.png)
 
@@ -108,3 +103,13 @@ dbt run -m (model name) --full-refresh
 dbt run -m (model name) --debug
 
 #### incremental
+
+{{ config(materialized='incremental',incremental_strategy='append')}}
+
+### ephemeral
+
+- actual definition meaning anything whose duration is extremely limited
+
+![](assets\20250828_081849_image.png)
+
+- better to use views as opposed to ephemeral for larger sets
