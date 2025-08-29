@@ -113,3 +113,11 @@ dbt run -m (model name) --debug
 ![](assets\20250828_081849_image.png)
 
 - better to use views as opposed to ephemeral for larger sets
+
+### seeds
+
+
+![](assets\20250828_190548_image.png)
+
+- running dbt seed will upload seed files to snowflake
+- seeds are static and not recommended if data is constantly changing

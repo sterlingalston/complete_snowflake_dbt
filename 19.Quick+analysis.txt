@@ -1,0 +1,19 @@
+
+
+- Link used in this video: https://blockchain.com/explorer
+
+
+
+
+***
+
+Models section of dbt_project.yml updated:
+
+
+models:
+  BTC:
+    marts:
+      +materialized: table
+
+
+***
