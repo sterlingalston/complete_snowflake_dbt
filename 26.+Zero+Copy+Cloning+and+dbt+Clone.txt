@@ -1,0 +1,8 @@
+
+
+- Link to the documentation about dbt Clone: https://docs.getdbt.com/reference/commands/clone
+
+
+- With the manifest.json file created from a prod run (or compilation) and present in your state folder, run:
+
+	dbt clone --state state

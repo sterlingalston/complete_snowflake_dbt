@@ -121,3 +121,114 @@ dbt run -m (model name) --debug
 
 - running dbt seed will upload seed files to snowflake
 - seeds are static and not recommended if data is constantly changing
+
+### changing the profile from dev to prod
+
+
+![](assets\20250829_085632_image.png)
+
+- changing the schema above from dbt_... to PROD
+- ![](assets\20250829_085721_image.png)
+- if you want to change the TARGET of the model when running it
+  - ![](assets\20250829_085831_image.png)
+  - will run with the configuration in the profiles.yml for the prod output
+
+### Manifest.json
+
+- C:\Users\sterl\Documents\Data Engineering\complete_snowflake_dbt\btc_project\BTC\target\manifest.json
+- every time dbt run or compile, manifest.json is re-written
+
+
+### creating a new profile
+
+- editing the profiles.yml, you can add a new one and change the target
+-  ![](assets\20250829_133311_image.png)
+
+### Defer
+
+- https://docs.getdbt.com/reference/node-selection/defer
+- ![](assets\20250829_152610_image.png)
+- within the state folder place the manifest.json that was generated from running --target prod
+
+### Cloning in DBT and SF
+
+
+![](assets\20250829_154027_image.png)
+
+
+![](assets\20250829_154208_image.png)
+
+#### defer vs clone
+
+- https://docs.getdbt.com/blog/to-defer-or-to-clone
+-
+
+# dbt Clone vs. Deferral: A Comprehensive Guide
+
+## What is dbt Clone?
+
+**dbt clone** is a new command in dbt 1.6 that uses native zero-copy clone functionality to copy entire schemas instantly and for free. It works by copying only metadata (not the actual data), creating two pointers to the same underlying data.
+
+## Key Differences: Clone vs. Defer
+
+### Implementation
+
+* **Defer** : Implicit via`--defer` flag
+* **Clone** : Explicit via`dbt clone` command
+
+### How They Work
+
+* **Defer** : Compares manifests and overrides`ref()` to point to pre-built models in source schema
+* **Clone** : Uses zero-copy cloning or creates pointer views to copy objects from source to target
+
+### Outputs
+
+* **Defer** : Doesn't create objects itself; dbt may create objects only if they've changed
+* **Clone** : Copies all objects from source to target schema, persisting after operation
+
+## Capability Comparison
+
+| Capability                                        | Defer | Clone |
+| ------------------------------------------------- | ----- | ----- |
+| Save time & cost by avoiding re-computation       | ✅    | ✅    |
+| Create database objects for downstream tools (BI) | ❌    | ✅    |
+| Safely modify objects in target schema            | ❌    | ✅    |
+| Avoid creating new database objects               | ✅    | ❌    |
+| Avoid data drift                                  | ✅    | ❌    |
+| Support multiple dynamic sources                  | ✅    | ❌    |
+
+## When to Use Each
+
+### Use Clone For:
+
+* **Testing staging datasets in BI** : Need production data copy available in downstream tools for safe iteration
+* **Blue/Green deployments** : Build entire staging dataset, test it, then atomically promote to production
+* **Creating sandboxes** : Safe experimentation with production data copies
+
+### Use Defer For:
+
+* **Slim CI** : Reference production models to speed up CI runs, only building changed models
+* **Dynamic source switching** : Reference models from different environments (prod for unchanged, staging for modified)
+
+## Rule of Thumb
+
+* **Defer** : Better for**Continuous Integration (CI)** use cases
+* **Clone** : Better for**Continuous Deployment (CD)** use cases
+
+Both commands can be used together within the same project at different stages of the deployment lifecycle.
+
+
+### Python models
+
+- can build models using python files!
+- https://docs.getdbt.com/docs/build/python-models
+- python models cannot be materialized as ephemeral or views, just tables
+- packages need to be configured within model py
+
+  - ![](assets\20250829_160017_image.png)
+  - import {package name}
+  - dbt.config(materialized = "table", packages = ["holidays"])
+- needs to be converted to pandas dataframe
+- python models must have all upper-case
+- code to debug dbt model
+- dsf

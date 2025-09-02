@@ -1,0 +1,62 @@
+
+
+- Git commands:
+
+	- git status
+	- git add .
+	- git commit -m "whale alert produced"
+	- git push --set-upstream origin dev
+
+
+
+profiles.yml example updated:
+
+***
+
+BTC:
+  outputs:
+    dev:
+      account: YOUR_SNOWFLAKE_ACCOUNT
+      database: BTC
+      password: YOUR_SNOWFLAKE_PASSWORD
+      role: ACCOUNTADMIN
+      schema: YOUR_SNOWFLAKE_SCHEMA
+      threads: 1
+      type: snowflake
+      user: YOUR_SNOWFLAKE_USER
+      warehouse: LARGE_WH
+
+    prod:
+      account: YOUR_SNOWFLAKE_ACCOUNT
+      database: BTC
+      password: YOUR_SNOWFLAKE_PASSWORD
+      role: ACCOUNTADMIN
+      schema: PROD
+      threads: 1
+      type: snowflake
+      user: YOUR_SNOWFLAKE_USER
+      warehouse: LARGE_WH
+
+  target: dev
+
+
+***
+
+
+- Production run commands:
+
+
+	dbt seed --target prod
+	
+	dbt run --target prod
+
+
+
+***
+
+
+- These steps show how to move your dbt models into production.
+
+- profiles.yml defines both dev and prod environments — you can switch targets using the --target flag.
+
+- The pull request & merge ensure code review and controlled deployment.

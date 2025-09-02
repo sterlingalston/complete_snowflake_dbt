@@ -1,0 +1,3 @@
+
+
+- Link to the Manifest.json file documentation: https://docs.getdbt.com/reference/artifacts/manifest-json

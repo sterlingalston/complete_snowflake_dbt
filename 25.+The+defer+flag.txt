@@ -1,0 +1,18 @@
+
+
+- Link to the defer documentation: https://docs.getdbt.com/reference/node-selection/defer
+
+
+
+- Write a production manifest.json
+
+	dbt compile --target prod
+
+
+- Create a state folder at the root level
+
+- Move manifest.json file in the state folder created
+
+- Command used to defer:
+
+	dbt run -m whale_alert --defer --state state
