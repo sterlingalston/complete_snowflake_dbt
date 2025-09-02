@@ -1,0 +1,40 @@
+*** dbt Generic Tests Documentation ***
+
+https://docs.getdbt.com/docs/build/data-tests
+
+
+*** Custom Generic Test: Validate BTC Address ***
+
+In your tests folder, create a generic folder inside it, and then create a file called crypto_utils.sql with the following code:
+
+
+{% test assert_valid_btc_address(model, column_name) %}
+
+    select *
+    from {{ model }}
+    where NOT (
+        {{ column_name }} LIKE '1%' OR
+        {{ column_name }} LIKE '3%' OR
+        {{ column_name }} LIKE 'bc1%'
+    )
+
+{% endtest %}
+
+
+
+
+*** Apply the Test in schema.yml ***
+
+
+- name: whale_alert
+  columns:
+    - name: output_address
+      data_tests:
+        - assert_valid_btc_address
+
+
+
+*** Run the Test ***
+
+
+dbt test --select whale_alert

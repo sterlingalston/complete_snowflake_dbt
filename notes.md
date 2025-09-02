@@ -231,4 +231,24 @@ Both commands can be used together within the same project at different stages o
 - needs to be converted to pandas dataframe
 - python models must have all upper-case
 - code to debug dbt model
-- dsf
+
+  ### - ![](assets\20250901_220506_image.png)
+
+  ### DBT Packages
+- hub.getdbt.com
+- packages yml in root directory
+- run dbt deps to install
+- example of macro
+- ![](assets\20250901_221746_image.png)
+
+### DBT Docs
+
+- dbt docs generate
+- target/run/catalog.json keeps all documentation on project
+- dbt docs serve
+
+### DBT Exposures Report Tracking w/ Looker
+
+- looker google
+-  ![](assets\20250901_224314_image.png)
+-

@@ -1,0 +1,13 @@
+
+
+- Command to generate the catalog.json file:
+
+	dbt docs generate
+	
+
+- Command to launch localhost with your dbt documentation:
+
+	dbt docs serve
+
+
+- More documentation about these commands: https://docs.getdbt.com/docs/build/documentation
