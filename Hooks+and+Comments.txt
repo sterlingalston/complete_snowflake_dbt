@@ -1,0 +1,24 @@
+
+
+*** Link to dbt hooks documentation ***
+
+https://docs.getdbt.com/docs/build/hooks-operations
+
+
+
+*** dbt_project.yml file - model section updated ***
+
+
+models:
+  BTC:
+    marts:
+      +materialized: table
+      +post-hook:
+        - "COMMENT ON TABLE {{ this }} IS 'This table was created by dbt';"
+		
+
+
+*** Link to Comment documentation in Snowflake ****
+
+
+https://docs.snowflake.com/en/sql-reference/sql/comment

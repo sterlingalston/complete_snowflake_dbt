@@ -1,0 +1,252 @@
+*** dbt Model Versions Documentation ***
+
+https://docs.getdbt.com/docs/mesh/govern/model-versions
+
+
+
+*** Create Two Versions of a Model ***
+
+
+1. Rename whale_alert.sql to whale_alert_v1.sql
+
+2. Copy the file and rename the copy to whale_alert_v2.sql, removing the total_sent_usd column:
+
+
+WITH WHALES AS (
+
+    select
+        output_address,
+        sum(output_value) as total_sent,
+        count(*) as tx_count
+    from {{ ref('stg_btc_transactions') }}
+    where output_value > 10
+    group by output_address
+    order by total_sent desc
+)
+
+select
+    '{{ invocation_id }}' as invocation_id,
+    w.output_address,
+    w.total_sent,
+    w.tx_count
+from WHALES w
+order by total_sent desc
+
+
+
+
+
+*** Update schema.yml for Versions ***
+
+
+- name: whale_alert
+  latest_version: 1
+  config:
+    contract:
+      enforced: true
+  columns:
+    - name: INVOCATION_ID
+      data_type: string
+    - name: output_address
+      data_type: string
+      data_tests:
+        - assert_valid_btc_address
+    - name: total_sent
+      data_type: float
+    - name: tx_count
+      data_type: int
+    - name: total_sent_usd
+      data_type: float
+
+  versions:
+    - v: 1
+      # Matches what's above
+    - v: 2
+      # Breaking change: removed total_sent_usd
+      columns:
+        - include: all
+          exclude: [total_sent_usd]
+
+
+
+
+*** Update Exposure to Point to v1 ***
+
+
+
+exposures:
+  - name: btc_whale_alert_exposure
+    label: BTC Whale alert
+    type: dashboard
+    maturity: high
+    url: https://lookerstudio.google.com/reporting/1e6cd860-9716-4179-8cd1-2be00c1db0c0
+    description: >
+      BTC Whale alert transactions report
+    depends_on:
+      - ref('whale_alert', v=1)
+
+
+
+
+*** Run both versions ***
+
+
+dbt run -m whale_alert
+
+
+
+*** Run the latest version ***
+
+
+dbt run -m whale_alert,version:latest
+
+
+
+*** Deprecate v1 in schema.yml file ***
+
+
+versions:
+  - v: 1
+    deprecation_date: 2026-01-01
+  - v: 2
+    columns:
+      - include: all
+        exclude: [total_sent_usd]
+
+
+
+
+*** Create Downstream Model ***
+
+whale_top_10.sql:
+
+WITH BASE AS (
+    select *
+    from {{ ref('whale_alert') }}
+    order by total_sent desc
+    limit 10
+)
+select *
+from BASE
+
+
+-- Running this will show a warning if whale_alert’s version is deprecated.
+
+
+
+
+
+*** Switch Latest Version to v2 & Disable v1 ***
+
+
+
+- name: whale_alert
+  latest_version: 2
+  config:
+    contract:
+      enforced: true
+  columns:
+    - name: INVOCATION_ID
+      data_type: string
+    - name: output_address
+      data_type: string
+      data_tests:
+        - assert_valid_btc_address
+    - name: total_sent
+      data_type: float
+    - name: tx_count
+      data_type: int
+    - name: total_sent_usd
+      data_type: float
+
+  versions:
+    - v: 1
+      deprecation_date: 2026-01-01
+      config:
+        enabled: false
+    - v: 2
+      columns:
+        - include: all
+          exclude: [total_sent_usd]
+		  
+
+
+
+
+*** Update Exposure to Point to v2 ***
+
+
+exposures:
+  - name: btc_whale_alert_exposure
+    label: BTC Whale alert
+    type: dashboard
+    maturity: high
+    url: https://lookerstudio.google.com/reporting/1e6cd860-9716-4179-8cd1-2be00c1db0c0
+    description: >
+      BTC Whale alert transactions report
+    depends_on:
+      - ref('whale_alert', v=2)
+
+
+
+
+
+
+*** Macro: create_latest_version_view.sql ***
+
+
+{% macro create_latest_version_view() %}
+
+    {% if model.get('version') and model.get('version') == model.get('latest_version') %}
+
+        {% set new_relation = this.incorporate(path={"identifier": model['name']}) %}
+        {% set existing_relation = load_relation(new_relation) %}
+
+        {% if existing_relation and not existing_relation.is_view %}
+            {{ drop_relation_if_exists(existing_relation) }}
+        {% endif %}
+
+        {% set create_view_sql -%}
+            create or replace view {{ new_relation }}
+            as select * from {{ this }}
+        {%- endset %}
+
+        {% do log("Creating view " ~ new_relation ~ " pointing to " ~ this, info = true) if execute %}
+
+        {{ return(create_view_sql) }}
+
+    {% else %}
+        select 1 as id
+    {% endif %}
+
+{% endmacro %}
+
+
+
+
+
+
+
+
+*** Add Post-Hook in dbt_project.yml ***
+
+
+models:
+  BTC:
+    marts:
+      +materialized: table
+      +post-hook:
+        - "COMMENT ON TABLE {{ this }} IS 'This table was created by dbt';"
+        - "{{ create_latest_version_view() }}"
+
+
+
+
+*** Verify ***
+
+
+dbt run -m whale_alert
+
+
+
+-- Check that the whale_alert view points to the latest version

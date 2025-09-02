@@ -116,14 +116,12 @@ dbt run -m (model name) --debug
 
 ### seeds
 
-
 ![](assets\20250828_190548_image.png)
 
 - running dbt seed will upload seed files to snowflake
 - seeds are static and not recommended if data is constantly changing
 
 ### changing the profile from dev to prod
-
 
 ![](assets\20250829_085632_image.png)
 
@@ -138,11 +136,10 @@ dbt run -m (model name) --debug
 - C:\Users\sterl\Documents\Data Engineering\complete_snowflake_dbt\btc_project\BTC\target\manifest.json
 - every time dbt run or compile, manifest.json is re-written
 
-
 ### creating a new profile
 
 - editing the profiles.yml, you can add a new one and change the target
--  ![](assets\20250829_133311_image.png)
+- ![](assets\20250829_133311_image.png)
 
 ### Defer
 
@@ -152,9 +149,7 @@ dbt run -m (model name) --debug
 
 ### Cloning in DBT and SF
 
-
 ![](assets\20250829_154027_image.png)
-
 
 ![](assets\20250829_154208_image.png)
 
@@ -217,7 +212,6 @@ dbt run -m (model name) --debug
 
 Both commands can be used together within the same project at different stages of the deployment lifecycle.
 
-
 ### Python models
 
 - can build models using python files!
@@ -252,7 +246,7 @@ Both commands can be used together within the same project at different stages o
 - looker google
 - ![](assets\20250901_224314_image.png)
 - place in schema.yml
--  ![](assets\20250901_224703_image.png)
+- ![](assets\20250901_224703_image.png)
 
 ### Tests
 
@@ -260,5 +254,26 @@ Both commands can be used together within the same project at different stages o
 - ![](assets\20250902_090103_image.png)
 - can go in tests folder, but macros folder as well
   - if in tests folder it needs to go in folder called 'generic'
-  -  ![](assets\20250902_090228_image.png)
-  -
+  - ![](assets\20250902_090228_image.png)
+
+### Contracts
+
+- a guarantee that model will not change
+- ![](assets\20250902_092848_image.png)
+- columns must be listed with their own datatype
+- ![](assets\20250902_095103_image.png)
+-
+
+### Versioning in dbt
+
+![](assets\20250902_110620_image.png)
+
+- need to specify latest version
+- ![](assets\20250902_110711_image.png)
+- create additional models with different versions to match the configuration in the schema
+- ![](assets\20250902_111346_image.png)
+- when referencing other models using ref, add 'v=#' argument:
+- ![](assets\20250902_121750_image.png)
+- enabling versions
+-  ![](assets\20250902_122726_image.png)
+-
