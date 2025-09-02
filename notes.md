@@ -245,10 +245,20 @@ Both commands can be used together within the same project at different stages o
 
 - dbt docs generate
 - target/run/catalog.json keeps all documentation on project
-- dbt docs serve
+- dbt docs serve will run a server with dbt documents
 
 ### DBT Exposures Report Tracking w/ Looker
 
 - looker google
--  ![](assets\20250901_224314_image.png)
--
+- ![](assets\20250901_224314_image.png)
+- place in schema.yml
+-  ![](assets\20250901_224703_image.png)
+
+### Tests
+
+- generic data tests
+- ![](assets\20250902_090103_image.png)
+- can go in tests folder, but macros folder as well
+  - if in tests folder it needs to go in folder called 'generic'
+  -  ![](assets\20250902_090228_image.png)
+  -

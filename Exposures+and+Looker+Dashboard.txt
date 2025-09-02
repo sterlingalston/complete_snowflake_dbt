@@ -1,0 +1,38 @@
+
+***Create a Looker Studio Account***
+
+https://lookerstudio.google.com/
+
+Tip: Use the same email address as your Snowflake account for easier integration
+
+
+*** dbt Exposures Documentation***
+
+https://docs.getdbt.com/docs/build/exposures
+
+
+
+
+***Example: schema.yml with an Exposure***
+
+exposures:
+
+  - name: btc_whale_alert_exposure
+    label: BTC Whale alert
+    type: dashboard
+    maturity: high
+    url: https://lookerstudio.google.com/reporting/replace_with_your_own_looker_report
+    description: >
+      BTC Whale alert transactions report"?
+
+    depends_on:
+      - ref('whale_alert')
+
+    owner:
+      name: Your Own Name
+
+
+***Generate Documentation***
+
+	dbt docs generate
+	dbt docs serve
