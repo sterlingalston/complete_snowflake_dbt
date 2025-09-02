@@ -275,5 +275,7 @@ Both commands can be used together within the same project at different stages o
 - when referencing other models using ref, add 'v=#' argument:
 - ![](assets\20250902_121750_image.png)
 - enabling versions
--  ![](assets\20250902_122726_image.png)
+- ![](assets\20250902_122726_image.png)
+- there's also macro for creating latest version view macros
+-  ![](assets\20250902_123001_image.png)
 -
